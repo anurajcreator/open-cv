@@ -1,7 +1,10 @@
-# Search not working properly many modification needed started on 09/03/2020
 
 
-# imported libraries
+
+
+  # Search not working properly many modification needed started on 09/03/2020
+
+  # imported libraries
 import spur
 import paramiko
 
@@ -19,9 +22,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from flask import Flask
+app = Flask(__name__)
 
-#whatsapp variables
-# wsp_dic = {1: 'Shreya', 2: 'Atrayan', 3: 'Argha Nath', 4: 'Saikat Mondal', 5: 'Saikat Das', 6: 'Papa', 7: 'Aruna'}
 w_token = 0
 
 # chrom profile
@@ -78,7 +81,7 @@ def takeCommandf():
         r.pause_threshold = 0.6
         audio = r.listen(source)
     try:
-        print("Recognizing...")
+        # print("Recognizing...")
         query = r.recognize_google(audio, language='en-IN')
         print(f"User said: {query}\n")
     except Exception as e:
@@ -86,6 +89,7 @@ def takeCommandf():
         # print("said that again please")
         return "None"
     return query
+
 
 # Input function for rest of the period.
 def takeCommand():
@@ -109,7 +113,8 @@ def takeCommand():
 
 
 # main-f dude.
-if __name__ == "__main__":
+@app.route('/')
+def main():
     while True:
         query = takeCommandf().lower()
         s = query
@@ -238,7 +243,7 @@ if __name__ == "__main__":
 
                     if len(query) == 0:
                         speak('Sir to whom?')
-                        query = takeCommand().lower()
+                        query = takeCommand()
                     if count == 0:
                         driver = webdriver.Chrome(options=chrome_options)
                         count = 1
@@ -393,12 +398,5 @@ if __name__ == "__main__":
                 elif 'reboot friday' in query:
                     exit()
 
-                # else:
-                #     print(query)
-                #     speak(random.choice(list))
-
-
-
-        # elif 'reboot mark' in query:
-        #     speak("Rebooting...")
-        #     # exit()
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
